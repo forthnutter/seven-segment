@@ -8,6 +8,9 @@ USING: accessors kernel opengl opengl.demo-support opengl.gl ui ui.gadgets
 
 IN: seven-segment
 
+TUPLE: segment < gadget colour ;
+
+
 TUPLE: seven-seg-gadget < gadget a b c d e f g dp ;
 
 ! main segment shape
@@ -103,9 +106,7 @@ M: seven-seg-gadget ungraft*
 
 
 : draw-seg-f ( -- )
-
-
-    { 5 20 } 
+    { 4 20 } 
     [
         10.0 10.0 10.0 glScalef
         90.0 0.0 0.0 1.0  glRotatef
@@ -124,7 +125,7 @@ M: seven-seg-gadget ungraft*
 
 : draw-seg-g ( -- )
 
-    { 15 30 } 
+    { 15 31 } 
     [
         10.0 10.0 10.0 glScalef
         GL_POLYGON
@@ -142,6 +143,21 @@ M: seven-seg-gadget ungraft*
 : draw-seg-dp ( -- )
 ;
 
+: draw-segment ( segment -- )
+    colour>> first4 glColor4f
+    { 15 10 } 
+    [
+        10.0 10.0 10.0 glScalef
+        GL_POLYGON
+        [
+            SEGMENT-SHAPE-1
+            [
+                first3 glVertex3f
+            ] each
+        ] do-state
+    ] with-translation
+;
+
 
 : draw-seg ( -- )
 
@@ -150,12 +166,15 @@ M: seven-seg-gadget ungraft*
     draw-seg-c
     draw-seg-d
     draw-seg-e
-!    draw-seg-f
-!    draw-seg-g
+    draw-seg-f
+    draw-seg-g
 !    draw-seg-dp
 ;
 
-M: seg-gadget draw-gadget* ( seg-gadget -- )
+
+
+
+M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
    draw-seg drop ;
 
 
