@@ -10,6 +10,8 @@ IN: seven-segment
 
 TUPLE: segment < gadget colour ;
 
+: <segment> ( -- gadget )
+    segment new ;
 
 TUPLE: seven-seg-gadget < gadget a b c d e f g dp ;
 
@@ -22,7 +24,10 @@ CONSTANT: SEGMENT-SHAPE-1 {
 : <seven-seg-gadget> ( -- gadget )
     seven-seg-gadget new
     t >>clipped?
-    { 200 200 } >>pref-dim ;
+    { 200 200 } >>pref-dim
+!    <segment> add-gadget
+    dup prefer
+;
 
 
 M: seven-seg-gadget ungraft*
