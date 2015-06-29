@@ -3,17 +3,13 @@
 ! See http://factorcode.org/license.txt for BSD license.
 
 
-USING: accessors kernel opengl opengl.demo-support opengl.gl ui ui.gadgets
-       ui.gadgets.packs ui.render tools.walker tools.continuations sequences ;
+USING: accessors kernel opengl opengl.demo-support opengl.gl opengl.debug
+       ui ui.gadgets
+       ui.gadgets.packs ui.render tools.walker tools.continuations sequences
+       vectors prettyprint ;
 
 IN: seven-segment
 
-TUPLE: segment < gadget colour ;
-
-: <segment> ( -- gadget )
-    segment new ;
-
-TUPLE: seven-seg-gadget < gadget a b c d e f g dp ;
 
 ! main segment shape
 CONSTANT: SEGMENT-SHAPE-1 {
@@ -21,12 +17,39 @@ CONSTANT: SEGMENT-SHAPE-1 {
     { 0.5 -0.5 0.0 } { -0.5 -0.5 0.0 } { -1.0 0.0 0.0 } }
 
 
+CONSTANT: SEGMENT-COLOUR { 0.0 0.0 0.0 0.5 }
+
+TUPLE: segment colour ;
+
+: <segment> ( -- segment )
+    segment new ;
+
+TUPLE: seven-seg-gadget < gadget vector a b c d e f g dp ;
+
+
 : <seven-seg-gadget> ( -- gadget )
     seven-seg-gadget new
     t >>clipped?
     { 200 200 } >>pref-dim
-!    <segment> add-gadget
-    dup prefer
+    8 <vector> >>vector
+    dup vector>>
+! setup segment a 
+    <segment> SEGMENT-COLOUR >>colour suffix
+! setup segment b
+    <segment> SEGMENT-COLOUR >>colour suffix
+! setup segment c
+    <segment> SEGMENT-COLOUR >>colour suffix
+! setup segment d
+    <segment> SEGMENT-COLOUR >>colour suffix
+! setup segment e
+    <segment> SEGMENT-COLOUR >>colour suffix
+! setup segment f
+    <segment> SEGMENT-COLOUR >>colour suffix
+! setup segment g
+    <segment> SEGMENT-COLOUR >>colour suffix
+! setup segment dp
+    <segment> SEGMENT-COLOUR >>colour suffix
+    drop
 ;
 
 
@@ -149,7 +172,7 @@ M: seven-seg-gadget ungraft*
 ;
 
 : draw-segment ( segment -- )
-    colour>> first4 glColor4f
+    colour>> dup . first4 glColor4f
     { 15 10 } 
     [
         10.0 10.0 10.0 glScalef
@@ -166,13 +189,15 @@ M: seven-seg-gadget ungraft*
 
 : draw-seg ( -- )
 
-    draw-seg-a
-    draw-seg-b
-    draw-seg-c
-    draw-seg-d
-    draw-seg-e
-    draw-seg-f
-    draw-seg-g
+    
+
+!    draw-seg-a
+!    draw-seg-b
+!    draw-seg-c
+!    draw-seg-d
+!    draw-seg-e
+!    draw-seg-f
+!    draw-seg-g
 !    draw-seg-dp
 ;
 
@@ -180,7 +205,10 @@ M: seven-seg-gadget ungraft*
 
 
 M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
-   draw-seg drop ;
+   gl-break vector>>
+   [
+      draw-segment 
+   ] each ;
 
 
 : start-gadgets ( -- gadget )
