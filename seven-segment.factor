@@ -6,7 +6,7 @@
 USING: accessors kernel opengl opengl.demo-support opengl.gl opengl.debug
        ui ui.gadgets
        ui.gadgets.packs ui.render tools.walker tools.continuations sequences
-       vectors prettyprint ;
+       vectors prettyprint namespaces ;
 
 IN: seven-segment
 
@@ -205,9 +205,10 @@ M: seven-seg-gadget ungraft*
 
 
 M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
-   gl-break vector>>
+   draw-seg-a
+   vector>>
    [
-      draw-segment 
+       draw-segment 
    ] each ;
 
 
@@ -217,7 +218,7 @@ M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
     add-gadget ;
 
 MAIN-WINDOW: test { { title "TEST" } }
-    start-gadgets >>gadgets ;
+    start-gadgets >>gadgets [ drop t ] find-window G-world set ;
 
 
 
