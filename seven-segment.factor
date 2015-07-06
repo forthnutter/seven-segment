@@ -18,8 +18,16 @@ CONSTANT: SEGMENT-SHAPE-1 {
 
 
 CONSTANT: SEGMENT-COLOUR { 0.0 0.0 0.0 0.5 }
+CONSTANT: SEGMENT-A-POS { 15 10 }
+CONSTANT: SEGMENT-B-POS { 26 21 }
+CONSTANT: SEGMENT-C-POS { 26 41 } 
+CONSTANT: SEGMENT-D-POS { 15 51 } 
+CONSTANT: SEGMENT-E-POS { 4 41 }
+CONSTANT: SEGMENT-F-POS { 4 20 } 
+CONSTANT: SEGMENT-G-POS { 15 31 } 
+CONSTANT: SEGMENT-DP-POS { 30 51 }
 
-TUPLE: segment colour ;
+TUPLE: segment colour pos ;
 
 : <segment> ( -- segment )
     segment new ;
@@ -34,21 +42,38 @@ TUPLE: seven-seg-gadget < gadget vector a b c d e f g dp ;
     8 <vector> >>vector
     dup vector>> 
 ! setup segment a 
-    <segment> SEGMENT-COLOUR >>colour suffix
+    <segment>
+        SEGMENT-COLOUR >>colour
+        SEGMENT-A-POS  >>pos suffix!
+
 ! setup segment b
-    <segment> SEGMENT-COLOUR >>colour suffix
+    <segment>
+        SEGMENT-COLOUR >>colour
+        SEGMENT-B-POS  >>pos suffix!
 ! setup segment c
-    <segment> SEGMENT-COLOUR >>colour suffix
+    <segment>
+        SEGMENT-COLOUR >>colour
+        SEGMENT-C-POS  >>pos suffix!
 ! setup segment d
-    <segment> SEGMENT-COLOUR >>colour suffix
+    <segment>
+        SEGMENT-COLOUR >>colour
+        SEGMENT-D-POS  >>pos suffix!
 ! setup segment e
-    <segment> SEGMENT-COLOUR >>colour suffix
+    <segment>
+        SEGMENT-COLOUR >>colour
+        SEGMENT-E-POS  >>pos suffix!
 ! setup segment f
-    <segment> SEGMENT-COLOUR >>colour suffix
+    <segment>
+        SEGMENT-COLOUR >>colour
+        SEGMENT-F-POS  >>pos suffix!
 ! setup segment g
-    <segment> SEGMENT-COLOUR >>colour suffix
+    <segment>
+        SEGMENT-COLOUR >>colour
+        SEGMENT-G-POS  >>pos suffix!
 ! setup segment dp
-    <segment> SEGMENT-COLOUR >>colour suffix
+    <segment>
+        SEGMENT-COLOUR >>colour
+        SEGMENT-DP-POS  >>pos suffix!
     drop
 ;
 
@@ -173,9 +198,8 @@ M: seven-seg-gadget ungraft*
 ;
 
 : draw-segment ( segment -- )
-   draw-seg-a
-    colour>> dup . first4 glColor4f
-    { 15 10 } 
+    [ colour>> first4 glColor4f ] keep
+    pos>> 
     [
         10.0 10.0 10.0 glScalef
         GL_POLYGON
@@ -186,21 +210,6 @@ M: seven-seg-gadget ungraft*
             ] each
         ] do-state
     ] with-translation
-;
-
-
-: draw-seg ( -- )
-
-    
-
-!    draw-seg-a
-!    draw-seg-b
-!    draw-seg-c
-!    draw-seg-d
-!    draw-seg-e
-!    draw-seg-f
-!    draw-seg-g
-!    draw-seg-dp
 ;
 
 
