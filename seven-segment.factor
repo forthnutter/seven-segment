@@ -4,7 +4,7 @@
 
 
 USING: accessors kernel opengl opengl.demo-support opengl.gl opengl.debug
-       ui ui.gadgets
+       ui ui.gadgets io
        ui.gadgets.packs ui.render tools.walker tools.continuations sequences
        vectors prettyprint namespaces ;
 
@@ -32,7 +32,7 @@ TUPLE: seven-seg-gadget < gadget vector a b c d e f g dp ;
     t >>clipped?
     { 200 200 } >>pref-dim
     8 <vector> >>vector
-    dup vector>>
+    dup vector>> 
 ! setup segment a 
     <segment> SEGMENT-COLOUR >>colour suffix
 ! setup segment b
@@ -59,6 +59,7 @@ M: seven-seg-gadget ungraft*
 
 : draw-seg-a ( -- )
     ! A
+    " a " print
     0.0 0.0 0.0 0.5 glColor4f
     { 15 10 } 
     [
@@ -172,6 +173,7 @@ M: seven-seg-gadget ungraft*
 ;
 
 : draw-segment ( segment -- )
+   draw-seg-a
     colour>> dup . first4 glColor4f
     { 15 10 } 
     [
@@ -205,7 +207,6 @@ M: seven-seg-gadget ungraft*
 
 
 M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
-   draw-seg-a
    vector>>
    [
        draw-segment 
@@ -218,7 +219,7 @@ M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
     add-gadget ;
 
 MAIN-WINDOW: test { { title "TEST" } }
-    start-gadgets >>gadgets [ drop t ] find-window G-world set ;
+    start-gadgets >>gadgets ;
 
 
 
