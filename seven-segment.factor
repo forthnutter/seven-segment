@@ -18,6 +18,8 @@ CONSTANT: SEGMENT-SHAPE-1 {
 
 
 CONSTANT: SEGMENT-COLOUR { 0.0 0.0 0.0 0.5 }
+CONSTANT: SEGMENT-SCALE { 10.0 10.0 10.0 }
+
 CONSTANT: SEGMENT-A-POS { 15 10 }
 CONSTANT: SEGMENT-B-POS { 26 21 }
 CONSTANT: SEGMENT-C-POS { 26 41 } 
@@ -27,7 +29,16 @@ CONSTANT: SEGMENT-F-POS { 4 20 }
 CONSTANT: SEGMENT-G-POS { 15 31 } 
 CONSTANT: SEGMENT-DP-POS { 30 51 }
 
-TUPLE: segment colour pos ;
+CONSTANT: SEGMENT-A-ROT { 0.0 0.0 0.0 1.0 }
+CONSTANT: SEGMENT-B-ROT { 90.0 0.0 0.0 1.0 }
+CONSTANT: SEGMENT-C-ROT { 90.0 0.0 0.0 1.0 }
+CONSTANT: SEGMENT-D-ROT { 0.0 0.0 0.0 1.0 }
+CONSTANT: SEGMENT-E-ROT { 90.0 0.0 0.0 1.0 }
+CONSTANT: SEGMENT-F-ROT { 90.0 0.0 0.0 1.0 }
+CONSTANT: SEGMENT-G-ROT { 0.0 0.0 0.0 1.0 }
+CONSTANT: SEGMENT-DP-ROT { 90.0 0.0 0.0 1.0 }
+
+TUPLE: segment colour pos scale rotation ;
 
 : <segment> ( -- segment )
     segment new ;
@@ -44,36 +55,60 @@ TUPLE: seven-seg-gadget < gadget vector a b c d e f g dp ;
 ! setup segment a 
     <segment>
         SEGMENT-COLOUR >>colour
-        SEGMENT-A-POS  >>pos suffix!
-
+        SEGMENT-A-POS  >>pos
+        SEGMENT-SCALE  >>scale
+        SEGMENT-A-ROT  >>rotation
+        suffix!
 ! setup segment b
     <segment>
         SEGMENT-COLOUR >>colour
-        SEGMENT-B-POS  >>pos suffix!
+        SEGMENT-B-POS  >>pos
+        SEGMENT-SCALE  >>scale
+        SEGMENT-B-ROT  >>rotation
+        suffix!
 ! setup segment c
     <segment>
         SEGMENT-COLOUR >>colour
-        SEGMENT-C-POS  >>pos suffix!
+        SEGMENT-C-POS  >>pos
+        SEGMENT-SCALE  >>scale
+        SEGMENT-C-ROT  >>rotation
+        suffix!
 ! setup segment d
     <segment>
         SEGMENT-COLOUR >>colour
-        SEGMENT-D-POS  >>pos suffix!
+        SEGMENT-D-POS  >>pos
+        SEGMENT-SCALE  >>scale
+        SEGMENT-D-ROT  >>rotation
+        suffix!
 ! setup segment e
     <segment>
         SEGMENT-COLOUR >>colour
-        SEGMENT-E-POS  >>pos suffix!
+        SEGMENT-E-POS  >>pos
+        SEGMENT-SCALE  >>scale
+        SEGMENT-E-ROT  >>rotation
+        suffix!
 ! setup segment f
     <segment>
         SEGMENT-COLOUR >>colour
-        SEGMENT-F-POS  >>pos suffix!
+        SEGMENT-F-POS  >>pos
+        SEGMENT-SCALE  >>scale
+        SEGMENT-F-ROT  >>rotation
+        suffix!
 ! setup segment g
     <segment>
         SEGMENT-COLOUR >>colour
-        SEGMENT-G-POS  >>pos suffix!
+        SEGMENT-G-POS  >>pos
+        SEGMENT-SCALE  >>scale
+        SEGMENT-G-ROT  >>rotation
+        suffix!
 ! setup segment dp
     <segment>
         SEGMENT-COLOUR >>colour
-        SEGMENT-DP-POS  >>pos suffix!
+        SEGMENT-DP-POS  >>pos
+        SEGMENT-SCALE  >>scale
+        SEGMENT-DP-ROT >>rotation
+        suffix!
+
     drop
 ;
 
@@ -199,9 +234,10 @@ M: seven-seg-gadget ungraft*
 
 : draw-segment ( segment -- )
     [ colour>> first4 glColor4f ] keep
-    pos>> 
+    dup pos>> 
     [
-        10.0 10.0 10.0 glScalef
+        [ scale>> first3 glScalef ] keep
+        [ rotation>> first4 glRotatef ] keep drop
         GL_POLYGON
         [
             SEGMENT-SHAPE-1
