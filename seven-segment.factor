@@ -16,9 +16,14 @@ CONSTANT: SEGMENT-SHAPE-1 {
     { -0.5 0.5 0.0 } { 0.5 0.5 0.0 } { 1.0 0.0 0.0 }
     { 0.5 -0.5 0.0 } { -0.5 -0.5 0.0 } { -1.0 0.0 0.0 } }
 
+CONSTANT: DP-SHAPE-1 {
+    { -0.5 0.5 0.0 } { 0.5 0.5 0.0 } { 1.0 0.0 0.0 }
+    { 0.5 -0.5 0.0 } { -0.5 -0.5 0.0 } { -1.0 0.0 0.0 } }
+
 
 CONSTANT: SEGMENT-COLOUR { 0.0 0.0 0.0 0.5 }
 CONSTANT: SEGMENT-SCALE { 10.0 10.0 10.0 }
+CONSTANT: DP-SCALE { 5.0 5.0 5.0 }
 
 CONSTANT: SEGMENT-A-POS { 15 10 }
 CONSTANT: SEGMENT-B-POS { 26 21 }
@@ -39,11 +44,40 @@ CONSTANT: SEGMENT-G-ROT { 0.0 0.0 0.0 1.0 }
 CONSTANT: SEGMENT-DP-ROT { 90.0 0.0 0.0 1.0 }
 
 TUPLE: segment colour pos scale rotation ;
+TUPLE: dpoint colour pos scale rotation ;
+
+GENERIC: sdraw ( object -- )
 
 : <segment> ( -- segment )
     segment new ;
 
+M: segment sdraw
+    GL_POLYGON
+    [
+        SEGMENT-SHAPE-1
+        [
+            first3 glVertex3f
+        ] each
+    ] do-state
+    drop
+;
+
+: <dpoint> ( -- dp )
+    dpoint new ;
+
+M: dpoint sdraw
+    GL_POLYGON
+    [
+        DP-SHAPE-1
+        [
+            first3 glVertex3f
+        ] each
+    ] do-state
+    drop
+;
+
 TUPLE: seven-seg-gadget < gadget vector a b c d e f g dp ;
+
 
 
 : <seven-seg-gadget> ( -- gadget )
@@ -101,11 +135,11 @@ TUPLE: seven-seg-gadget < gadget vector a b c d e f g dp ;
         SEGMENT-SCALE  >>scale
         SEGMENT-G-ROT  >>rotation
         suffix!
-! setup segment dp
-    <segment>
+! setup dp
+    <dpoint>
         SEGMENT-COLOUR >>colour
         SEGMENT-DP-POS  >>pos
-        SEGMENT-SCALE  >>scale
+        DP-SCALE  >>scale
         SEGMENT-DP-ROT >>rotation
         suffix!
 
@@ -229,22 +263,16 @@ M: seven-seg-gadget ungraft*
     ] with-translation
 ;
 
-: draw-seg-dp ( -- )
-;
 
-: draw-segment ( segment -- )
+
+: draw-seven-segment ( segment -- )
     [ colour>> first4 glColor4f ] keep
     dup pos>> 
     [
         [ scale>> first3 glScalef ] keep
-        [ rotation>> first4 glRotatef ] keep drop
-        GL_POLYGON
-        [
-            SEGMENT-SHAPE-1
-            [
-                first3 glVertex3f
-            ] each
-        ] do-state
+        [ rotation>> first4 glRotatef ] keep
+        [ sdraw ] keep drop
+
     ] with-translation
 ;
 
@@ -254,7 +282,7 @@ M: seven-seg-gadget ungraft*
 M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
    vector>>
    [
-       draw-segment 
+       draw-seven-segment 
    ] each ;
 
 
