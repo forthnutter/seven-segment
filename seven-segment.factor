@@ -17,22 +17,26 @@ CONSTANT: SEGMENT-SHAPE-1 {
     { 0.5 -0.5 0.0 } { -0.5 -0.5 0.0 } { -1.0 0.0 0.0 } }
 
 CONSTANT: DP-SHAPE-1 {
-    { -0.5 0.5 0.0 } { 0.5 0.5 0.0 } { 1.0 0.0 0.0 }
-    { 0.5 -0.5 0.0 } { -0.5 -0.5 0.0 } { -1.0 0.0 0.0 } }
+    { -1.0 1.0 0.0 } { -0.5 1.0 0.0 } { 0.0 1.5 0.0 }
+    { 0.5 1.0 0.0 } { 1.0 1.0 0.0 } { 1.0 0.5 0.0 }
+    { 1.5 0.0 0.0 } { 1.0 -0.5 0.0 } { 1.0 -1.0 0.0 }
+    { 0.5 -1.0 0.0 } { 0.0 -1.5 0.0 } { -0.5 -1.0 0.0 }
+    { -1.0 -1.0 0.0 } { -1.0 -0.5 0.0 } { -1.5 0.0 0.0 }
+    { -1.0 0.5 0.0 } }
 
 
 CONSTANT: SEGMENT-COLOUR { 0.0 0.0 0.0 0.5 }
 CONSTANT: SEGMENT-SCALE { 10.0 10.0 10.0 }
-CONSTANT: DP-SCALE { 5.0 5.0 5.0 }
+CONSTANT: DP-SCALE { 2.5 2.5 2.5 }
 
-CONSTANT: SEGMENT-A-POS { 15 10 }
-CONSTANT: SEGMENT-B-POS { 26 21 }
-CONSTANT: SEGMENT-C-POS { 26 41 } 
-CONSTANT: SEGMENT-D-POS { 15 51 } 
-CONSTANT: SEGMENT-E-POS { 4 41 }
-CONSTANT: SEGMENT-F-POS { 4 20 } 
-CONSTANT: SEGMENT-G-POS { 15 31 } 
-CONSTANT: SEGMENT-DP-POS { 30 51 }
+CONSTANT: SEGMENT-A-POS { 17 10 }
+CONSTANT: SEGMENT-B-POS { 28 21 }
+CONSTANT: SEGMENT-C-POS { 28 41 } 
+CONSTANT: SEGMENT-D-POS { 17 51 } 
+CONSTANT: SEGMENT-E-POS { 6 41 }
+CONSTANT: SEGMENT-F-POS { 6 20 } 
+CONSTANT: SEGMENT-G-POS { 17 31 } 
+CONSTANT: SEGMENT-DP-POS { 32 55 }
 
 CONSTANT: SEGMENT-A-ROT { 0.0 0.0 0.0 1.0 }
 CONSTANT: SEGMENT-B-ROT { 90.0 0.0 0.0 1.0 }
@@ -83,7 +87,7 @@ TUPLE: seven-seg-gadget < gadget vector a b c d e f g dp ;
 : <seven-seg-gadget> ( -- gadget )
     seven-seg-gadget new
     t >>clipped?
-    { 200 200 } >>pref-dim
+    { 50 60 } >>pref-dim
     8 <vector> >>vector
     dup vector>> 
 ! setup segment a 
@@ -151,120 +155,6 @@ M: seven-seg-gadget ungraft*
     drop ;
 
 
-: draw-seg-a ( -- )
-    ! A
-    " a " print
-    0.0 0.0 0.0 0.5 glColor4f
-    { 15 10 } 
-    [
-        10.0 10.0 10.0 glScalef
-        GL_POLYGON
-        [
-            SEGMENT-SHAPE-1
-            [
-                first3 glVertex3f
-            ] each
-        ] do-state
-    ] with-translation
-;
-
-: draw-seg-b ( -- )
-    { 26 21 } 
-    [
-        10.0 10.0 10.0 glScalef
-        90.0 0.0 0.0 1.0  glRotatef
-        GL_POLYGON
-        [
-            SEGMENT-SHAPE-1
-            [
-                first3 glVertex3f
-            ] each
-        ] do-state
-    ] with-translation
-;
-
-: draw-seg-c ( -- )
-    { 26 41 } 
-    [
-        10.0 10.0 10.0 glScalef
-        90.0 0.0 0.0 1.0  glRotatef
-        GL_POLYGON
-        [ 
-            SEGMENT-SHAPE-1
-            [
-                first3 glVertex3f
-            ] each
-        ] do-state
-    ] with-translation
-;
-
-: draw-seg-d ( -- )
-    { 15 51 } 
-    [
-        10.0 10.0 10.0 glScalef
-        GL_POLYGON
-        [
-            SEGMENT-SHAPE-1
-            [
-                first3 glVertex3f
-            ] each
-        ] do-state
-    ] with-translation
-;
-
-: draw-seg-e ( -- )
-    { 4 41 } 
-    [
-        10.0 10.0 10.0 glScalef
-        90.0 0.0 0.0 1.0  glRotatef
-        GL_POLYGON
-        [ 
-            SEGMENT-SHAPE-1
-            [
-                first3 glVertex3f
-            ] each
-        ] do-state
-    ] with-translation
-;
-
-
-: draw-seg-f ( -- )
-    { 4 20 } 
-    [
-        10.0 10.0 10.0 glScalef
-        90.0 0.0 0.0 1.0  glRotatef
-        GL_POLYGON
-        [ 
-            -0.5 0.5 0.0 glVertex3f
-            0.5 0.5 0.0  glVertex3f
-            1.0 0.0 0.0  glVertex3f
-            0.5 -0.5 0.0 glVertex3f
-            -0.5 -0.5 0.0 glVertex3f
-            -1.0 0.0 0.0 glVertex3f
-        ] do-state
-    ] with-translation
-;
-
-
-: draw-seg-g ( -- )
-
-    { 15 31 } 
-    [
-        10.0 10.0 10.0 glScalef
-        GL_POLYGON
-        [ 
-            -0.5 0.5 0.0 glVertex3f
-            0.5 0.5 0.0  glVertex3f
-            1.0 0.0 0.0  glVertex3f
-            0.5 -0.5 0.0 glVertex3f
-            -0.5 -0.5 0.0 glVertex3f
-            -1.0 0.0 0.0 glVertex3f
-        ] do-state
-    ] with-translation
-;
-
-
-
 : draw-seven-segment ( segment -- )
     [ colour>> first4 glColor4f ] keep
     dup pos>> 
@@ -288,6 +178,8 @@ M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
 
 : start-gadgets ( -- gadget )
     <shelf>
+    <seven-seg-gadget>
+    add-gadget
     <seven-seg-gadget>
     add-gadget ;
 
