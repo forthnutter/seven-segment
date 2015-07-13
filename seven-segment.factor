@@ -87,7 +87,7 @@ TUPLE: seven-seg-gadget < gadget vector a b c d e f g dp ;
 : <seven-seg-gadget> ( -- gadget )
     seven-seg-gadget new
     t >>clipped?
-    { 50 60 } >>pref-dim
+    { 35 60 } >>pref-dim
     8 <vector> >>vector
     dup vector>> 
 ! setup segment a 
@@ -181,7 +181,10 @@ M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
     <seven-seg-gadget>
     add-gadget
     <seven-seg-gadget>
-    add-gadget ;
+    add-gadget 
+    <seven-seg-gadget>
+    add-gadget
+;
 
 MAIN-WINDOW: test { { title "TEST" } }
     start-gadgets >>gadgets ;
