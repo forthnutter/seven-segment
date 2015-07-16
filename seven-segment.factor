@@ -4,7 +4,7 @@
 
 
 USING: accessors kernel opengl opengl.demo-support opengl.gl opengl.debug
-       ui ui.gadgets io
+       ui ui.gadgets io models
        ui.gadgets.packs ui.render tools.walker tools.continuations sequences
        vectors prettyprint namespaces ;
 
@@ -29,14 +29,14 @@ CONSTANT: SEGMENT-COLOUR { 0.0 0.0 0.0 0.5 }
 CONSTANT: SEGMENT-SCALE { 10.0 10.0 10.0 }
 CONSTANT: DP-SCALE { 2.5 2.5 2.5 }
 
-CONSTANT: SEGMENT-A-POS { 17 10 }
-CONSTANT: SEGMENT-B-POS { 28 21 }
-CONSTANT: SEGMENT-C-POS { 28 41 } 
-CONSTANT: SEGMENT-D-POS { 17 51 } 
-CONSTANT: SEGMENT-E-POS { 6 41 }
-CONSTANT: SEGMENT-F-POS { 6 20 } 
-CONSTANT: SEGMENT-G-POS { 17 31 } 
-CONSTANT: SEGMENT-DP-POS { 32 55 }
+CONSTANT: SEGMENT-A-POS { 18 10 }
+CONSTANT: SEGMENT-B-POS { 29 21 }
+CONSTANT: SEGMENT-C-POS { 29 41 } 
+CONSTANT: SEGMENT-D-POS { 18 51 } 
+CONSTANT: SEGMENT-E-POS { 7 41 }
+CONSTANT: SEGMENT-F-POS { 7 20 } 
+CONSTANT: SEGMENT-G-POS { 18 31 } 
+CONSTANT: SEGMENT-DP-POS { 33 55 }
 
 CONSTANT: SEGMENT-A-ROT { 0.0 0.0 0.0 1.0 }
 CONSTANT: SEGMENT-B-ROT { 90.0 0.0 0.0 1.0 }
@@ -80,7 +80,7 @@ M: dpoint sdraw
     drop
 ;
 
-TUPLE: seven-seg-gadget < gadget vector a b c d e f g dp ;
+TUPLE: seven-seg-gadget < gadget vector ;
 
 
 
@@ -88,9 +88,10 @@ TUPLE: seven-seg-gadget < gadget vector a b c d e f g dp ;
     seven-seg-gadget new
     t >>clipped?
     { 35 60 } >>pref-dim
+    0 <model> >>model
     8 <vector> >>vector
     dup vector>> 
-! setup segment a 
+! setup segment a bit 0
     <segment>
         SEGMENT-COLOUR >>colour
         SEGMENT-A-POS  >>pos
@@ -186,7 +187,7 @@ M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
     add-gadget
 ;
 
-MAIN-WINDOW: test { { title "TEST" } }
+MAIN-WINDOW: seven { { title "TEST" } }
     start-gadgets >>gadgets ;
 
 
