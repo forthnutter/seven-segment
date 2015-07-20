@@ -47,8 +47,8 @@ CONSTANT: SEGMENT-F-ROT { 90.0 0.0 0.0 1.0 }
 CONSTANT: SEGMENT-G-ROT { 0.0 0.0 0.0 1.0 }
 CONSTANT: SEGMENT-DP-ROT { 90.0 0.0 0.0 1.0 }
 
-TUPLE: segment colour pos scale rotation ;
-TUPLE: dpoint colour pos scale rotation ;
+TUPLE: segment colour pos scale rotation enable ;
+TUPLE: dpoint colour pos scale rotation enable ;
 
 GENERIC: sdraw ( object -- )
 
@@ -65,6 +65,9 @@ M: segment sdraw
     ] do-state
     drop
 ;
+
+
+
 
 : <dpoint> ( -- dp )
     dpoint new ;
@@ -97,6 +100,7 @@ TUPLE: seven-seg-gadget < gadget vector ;
         SEGMENT-A-POS  >>pos
         SEGMENT-SCALE  >>scale
         SEGMENT-A-ROT  >>rotation
+        f >>enable
         suffix!
 ! setup segment b
     <segment>
@@ -104,6 +108,7 @@ TUPLE: seven-seg-gadget < gadget vector ;
         SEGMENT-B-POS  >>pos
         SEGMENT-SCALE  >>scale
         SEGMENT-B-ROT  >>rotation
+        f >>enable
         suffix!
 ! setup segment c
     <segment>
@@ -111,6 +116,7 @@ TUPLE: seven-seg-gadget < gadget vector ;
         SEGMENT-C-POS  >>pos
         SEGMENT-SCALE  >>scale
         SEGMENT-C-ROT  >>rotation
+        f >>enable
         suffix!
 ! setup segment d
     <segment>
@@ -118,6 +124,7 @@ TUPLE: seven-seg-gadget < gadget vector ;
         SEGMENT-D-POS  >>pos
         SEGMENT-SCALE  >>scale
         SEGMENT-D-ROT  >>rotation
+        f >>enable
         suffix!
 ! setup segment e
     <segment>
@@ -125,6 +132,7 @@ TUPLE: seven-seg-gadget < gadget vector ;
         SEGMENT-E-POS  >>pos
         SEGMENT-SCALE  >>scale
         SEGMENT-E-ROT  >>rotation
+        f >>enable
         suffix!
 ! setup segment f
     <segment>
@@ -132,6 +140,7 @@ TUPLE: seven-seg-gadget < gadget vector ;
         SEGMENT-F-POS  >>pos
         SEGMENT-SCALE  >>scale
         SEGMENT-F-ROT  >>rotation
+        f >>enable
         suffix!
 ! setup segment g
     <segment>
@@ -139,6 +148,7 @@ TUPLE: seven-seg-gadget < gadget vector ;
         SEGMENT-G-POS  >>pos
         SEGMENT-SCALE  >>scale
         SEGMENT-G-ROT  >>rotation
+        f >>enable
         suffix!
 ! setup dp
     <dpoint>
@@ -146,6 +156,7 @@ TUPLE: seven-seg-gadget < gadget vector ;
         SEGMENT-DP-POS  >>pos
         DP-SCALE  >>scale
         SEGMENT-DP-ROT >>rotation
+        f >>enable
         suffix!
 
     drop
