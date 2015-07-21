@@ -85,13 +85,15 @@ M: dpoint sdraw
 
 TUPLE: seven-seg-gadget < gadget vector ;
 
-
+M: seven-seg-gadget model-changed
+    drop drop
+;
 
 : <seven-seg-gadget> ( -- gadget )
     seven-seg-gadget new
     t >>clipped?
     { 35 60 } >>pref-dim
-    0 <model> >>model
+    0 <model> >>model ! use the model
     8 <vector> >>vector
     dup vector>> 
 ! setup segment a bit 0
@@ -184,7 +186,10 @@ M: seven-seg-gadget ungraft*
 M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
    vector>>
    [
-       draw-seven-segment 
+       [ enable>> ] keep swap
+       [ draw-seven-segment ]
+       [ drop ]
+       if
    ] each ;
 
 
@@ -195,7 +200,9 @@ M: seven-seg-gadget draw-gadget* ( seg-gadget -- )
     <seven-seg-gadget>
     add-gadget 
     <seven-seg-gadget>
+    [ model>> 1 swap set-model ] keep
     add-gadget
+
 ;
 
 MAIN-WINDOW: seven { { title "TEST" } }
